@@ -1,0 +1,27 @@
+{
+  "name": "faocs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx cli/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@farmfe/core": "latest",
+    "@farmfe/plugin-react": "^1.0.1",
+    "@types/node": "^20.11.28",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "tsx": "latest",
+    "typescript": "^5.4.2",
+    "react-refresh": "^0.14.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "latest"
+  }
+}
