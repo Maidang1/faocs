@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx cli/index.ts"
+    "dev": "tsx cli/index.ts dev",
+    "preview": "tsx cli/index.ts preview",
+    "build": "tsx cli/index.ts build"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +17,12 @@
     "@types/node": "^20.11.28",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "react-refresh": "^0.14.0",
     "tsx": "latest",
-    "typescript": "^5.4.2",
-    "react-refresh": "^0.14.0"
+    "typescript": "^5.4.2"
   },
   "dependencies": {
+    "cac": "^6.7.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "latest"

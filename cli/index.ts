@@ -1,33 +1,22 @@
-import { resolveConfig, Logger, createCompiler, createDevServer } from "@farmfe/core";
-import path from "path";
-const logger = new Logger();
+#!/usr/bin/env node
+import { cac } from "cac"
+import { dev } from "./commands/dev"
+import { build } from "./commands/build"
+import { preview } from "./commands/preview"
+import { version } from "./version"
 
-const buildServer = async () => {
-  const resolveServerConfig = await resolveConfig({
-    configPath: path.join(process.cwd(), 'farm.config.server.ts')
-  }, logger, 'development')
-  const compiler = await createCompiler(resolveServerConfig);
-  await compiler.compile()
-  compiler.writeResourcesToDisk();
-}
+export const cli = cac('faocs')
 
-const buildClient = async () => {
-  const resolvedClientConfig = await resolveConfig({
-    configPath: path.join(process.cwd(), 'farm.config.client.ts')
-  }, logger, "development");
-  const compiler = await createCompiler(resolvedClientConfig);
-  const devServer = await createDevServer(compiler, resolvedClientConfig, logger);
-  resolvedClientConfig.jsPlugins?.forEach(plugin => {
-    plugin.configureDevServer?.(devServer);
-  })
-  await devServer.listen();
+cli.command('[root]')
+  .alias('dev')
+  .action(dev)
 
+cli.command('build')
+  .action(build)
 
-}
+cli.command('preview')
+  .action(preview)
 
-
-async function main() {
-  await buildServer()
-  await buildClient()
-}
-main()
+cli.help()
+cli.version(version)
+cli.parse()
