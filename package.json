@@ -22,9 +22,12 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
+    "@mdx-js/mdx": "^3.0.1",
+    "@mdx-js/rollup": "^3.0.1",
     "cac": "^6.7.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "latest"
+    "react-router-dom": "latest",
+    "vfile": "^6.0.1"
   }
 }

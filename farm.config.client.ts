@@ -1,5 +1,7 @@
 import { defineConfig } from '@farmfe/core';
 import path from 'path';
+import { mdxPlugin } from './plugins/mdx';
+
 
 // const cleanUrl = (url: string): string => url.replace(/#.*$/s, '').replace(/\?.*$/s, '')
 export default defineConfig({
@@ -38,5 +40,6 @@ export default defineConfig({
   },
   plugins: [
     ['@farmfe/plugin-react', { runtime: 'automatic' }],
+    mdxPlugin()
   ],
 });

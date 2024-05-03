@@ -1,4 +1,5 @@
 import { defineConfig } from '@farmfe/core';
+import { mdxPlugin } from './plugins/mdx';
 
 export default defineConfig({
   compilation: {
@@ -18,5 +19,6 @@ export default defineConfig({
         development: false
       }
     ],
-  ]
+    mdxPlugin()
+  ],
 });
