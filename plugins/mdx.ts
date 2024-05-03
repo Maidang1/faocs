@@ -18,7 +18,7 @@ export const mdxPlugin = () => {
 
           return {
             content: data,
-            moduleType: 'less'
+            moduleType: 'mdx'
           }
         }
 
@@ -27,7 +27,7 @@ export const mdxPlugin = () => {
     },
     transform: {
       filters: {
-        moduleTypes: ["less"]
+        moduleTypes: ["mdx"]
       },
       async executor(param, ctx) {
         const data = param.content;
