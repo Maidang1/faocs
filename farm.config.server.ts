@@ -1,5 +1,6 @@
 import { defineConfig } from '@farmfe/core';
 import { mdxPlugin } from './plugins/mdx';
+import { virtualRoutes } from './plugins/virtual-routes';
 
 export default defineConfig({
   compilation: {
@@ -19,6 +20,7 @@ export default defineConfig({
         development: false
       }
     ],
-    mdxPlugin()
+    mdxPlugin(),
+    virtualRoutes()
   ],
 });

@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
-import About1 from './about.mdx';
+// import About1 from './about.mdx';
+// @ts-ignore
+import { routes as routes_virtual } from 'virtual-routes';
+
+
+const routes = [
+  ...routes_virtual
+    .filter(({ path }) => path !== '*')
+    .map((route_virtual) => ({
+      path: route_virtual.path,
+      lazy: lazy(() => route_virtual.lazy()),
+    })),
+];
+
+console.log('routes', routes);
 
 export default function App() {
   return (
@@ -8,7 +22,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='about' element={<About1 />} />
+          <Route path='about' element={<About />} />
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='*' element={<NoMatch />} />
         </Route>

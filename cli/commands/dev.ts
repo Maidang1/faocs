@@ -1,4 +1,4 @@
-import { resolveConfig, Logger, createCompiler, createDevServer } from "@farmfe/core";
+import { resolveConfig, Logger, createCompiler, createDevServer, createFileWatcher } from "@farmfe/core";
 import path from "path";
 const logger = new Logger();
 
@@ -17,6 +17,17 @@ const buildClient = async () => {
   }, logger, "development");
   const compiler = await createCompiler(resolvedClientConfig);
   const devServer = await createDevServer(compiler, resolvedClientConfig, logger);
+  const inlineConfig = {
+    root: process.cwd(),
+    compilation: {
+      lazyCompilation: false
+    },
+    server: resolvedClientConfig.server,
+    clearScreen: true,
+    configPath: path.join(process.cwd(), 'farm.config.client.ts'),
+    mode: "development"
+  } as any
+  createFileWatcher(devServer, resolvedClientConfig, inlineConfig, logger);
   resolvedClientConfig.jsPlugins?.forEach(plugin => {
     plugin.configureDevServer?.(devServer);
   })
@@ -26,7 +37,9 @@ const buildClient = async () => {
 }
 
 
+
+
 export const dev = async () => {
-  await buildServer()
+  // await buildServer()
   await buildClient()
 }

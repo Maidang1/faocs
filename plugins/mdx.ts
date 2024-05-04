@@ -32,8 +32,8 @@ export const mdxPlugin = () => {
       async executor(param, ctx) {
         const data = param.content;
         const file = new VFile({ path: param.resolvedPath, value: data })
-        const gen = createFormatAwareProcessors();
-        const compiled = await gen.process(file);
+        const processor = createFormatAwareProcessors();
+        const compiled = await processor.process(file);
         const code = String(compiled.value)
 
         return {
