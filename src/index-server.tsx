@@ -9,7 +9,6 @@ export default async function render(ctx: Context) {
   const { query, dataRoutes } = createStaticHandler(routes, { basename: "/" })
   const fetchRequest = createFetchRequest(ctx)
   const context = await query(fetchRequest)
-  console.log("context", context)
   const router = createStaticRouter(dataRoutes, context as StaticHandlerContext)
 
 
@@ -19,9 +18,7 @@ export default async function render(ctx: Context) {
     </React.StrictMode>
   );
 
-  console.log("html", html)
   return html
-
 }
 
 export function createFetchRequest(ctx: Context) {

@@ -11,8 +11,10 @@ export default defineConfig({
       path: './dist',
       targetEnv: 'node'
     },
-    persistentCache: false
+    persistentCache: false,
+    lazyCompilation: false
   },
+
   plugins: [
     [
       '@farmfe/plugin-react',
