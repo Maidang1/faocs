@@ -22,11 +22,12 @@ export default defineConfig({
     middlewares: [(server) => {
       server.app().use(async (ctx, next) => {
         await next();
+
         if (ctx.path === '/' || ctx.status === 404) {
           const render = await import(path.join(process.cwd(), 'dist', 'index.js')).then(
             (m) => m.default
           );
-          const renderedHtml = render(ctx.path);
+          const renderedHtml = await render(ctx);
           const template = server.getCompiler().resource('index_client.html').toString();
           const html = template.replace(
             '<div>app-html-to-replace</div>',

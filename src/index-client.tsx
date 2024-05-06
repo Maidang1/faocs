@@ -1,14 +1,14 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from './routers'
 
-import App from './main';
+import { hydrateLazyRoutes } from './utils/hydrateLazyRoutes';
 
-hydrateRoot(
-  document.getElementById('root')!,
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-);
+
+hydrate();
+async function hydrate() {
+  await hydrateLazyRoutes(routes, '/')
+  const router = createBrowserRouter(routes, { basename: '/', })
+  hydrateRoot(document.getElementById('root')!, <RouterProvider router={router} />)
+}

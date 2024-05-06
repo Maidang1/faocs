@@ -32,14 +32,9 @@ const buildClient = async () => {
     plugin.configureDevServer?.(devServer);
   })
   await devServer.listen();
-
-
 }
 
-
-
-
 export const dev = async () => {
-  // await buildServer()
+  await buildServer()
   await buildClient()
 }

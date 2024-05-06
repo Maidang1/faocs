@@ -10,7 +10,8 @@ export default defineConfig({
     output: {
       path: './dist',
       targetEnv: 'node'
-    }
+    },
+    persistentCache: false
   },
   plugins: [
     [
