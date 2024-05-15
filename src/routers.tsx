@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { type RouteObject } from 'react-router-dom';
-// @ts-expect-error
+// @ts-ignore
 import { routes as routes_virtual } from 'virtual-routes';
 import { Root } from "./app/root"
 import React from 'react'
@@ -13,10 +13,11 @@ const routes = [
     .map((route_virtual) => ({
       path: route_virtual.path,
       lazy: async () => {
-        const { ...route } = await route_virtual.lazy();
+        const { frontmatter, ...route } = await route_virtual.lazy();
+        console.log("route", frontmatter)
         return {
           ...route,
-          element: <Root><route.default /></Root >
+          element: <Root frontmatter={frontmatter}><route.default /></Root >
         } satisfies RouteObject
       }
     })),

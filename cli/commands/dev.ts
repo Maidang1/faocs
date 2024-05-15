@@ -2,7 +2,7 @@ import { resolveConfig, Logger, createCompiler, createDevServer, createFileWatch
 import path from "path";
 const logger = new Logger();
 
-const buildServer = async () => {
+export const buildServer = async () => {
   const resolveServerConfig = await resolveConfig({
     configPath: path.join(process.cwd(), 'farm.config.server.ts')
   }, logger, 'development')

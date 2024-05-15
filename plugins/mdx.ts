@@ -3,7 +3,16 @@ import { JsPlugin } from "@farmfe/core"
 import { existsSync } from "fs"
 import fsp from "fs/promises"
 import { VFile } from "vfile"
-export const mdxPlugin = () => {
+import remarkFrontmatter from "remark-frontmatter"
+import remarkParse from 'remark-parse'
+import remarkStringify from 'remark-stringify'
+import remarkGfm from "remark-gfm"
+import remarkMdxFrontmatter from "remark-mdx-frontmatter"
+
+
+type MdxPluginOption = Parameters<typeof createFormatAwareProcessors>
+
+export const mdxPlugin = (options: MdxPluginOption[number] = {}) => {
 
   return {
     name: "mdxPlugin",
@@ -32,9 +41,14 @@ export const mdxPlugin = () => {
       async executor(param, ctx) {
         const data = param.content;
         const file = new VFile({ path: param.resolvedPath, value: data })
-        const processor = createFormatAwareProcessors();
+        const processor = createFormatAwareProcessors({
+          ...options,
+          remarkPlugins: [remarkParse, remarkStringify, remarkFrontmatter, remarkMdxFrontmatter, remarkGfm]
+        });
         const compiled = await processor.process(file);
         const code = String(compiled.value)
+
+        console.log("mdx code", code);
 
         return {
           content: code,

@@ -2,6 +2,7 @@
 import { JsPlugin } from "@farmfe/core"
 import { extname, resolve } from "node:path"
 import { globby } from "globby"
+import { buildServer } from "../cli/commands/dev"
 
 export function virtualRoutes(): JsPlugin {
   const virtualModuleId = 'virtual-routes'
@@ -15,8 +16,14 @@ export function virtualRoutes(): JsPlugin {
       const pagesPath = resolve(process.cwd(), 'site', 'pages')
       if (pagesPath) {
         watcher.add(pagesPath)
-        watcher.on('add', () => server.restart(async () => { }))
-        watcher.on('unlink', () => server.restart(async () => { }))
+        watcher.on('add', async () => {
+          await buildServer()
+          server.restart(async () => { })
+        })
+        watcher.on('unlink', async () => {
+          await buildServer()
+          server.restart(async () => { })
+        })
       }
     },
     resolve: {

@@ -25,8 +25,11 @@ export default defineConfig({
         development: false
       }
     ],
-    mdxPlugin(),
+    mdxPlugin({
+      providerImportSource: "@mdx-js/react"
+    }),
     virtualRoutes(),
-    farmJsPluginPostcss()
+    farmJsPluginPostcss(),
+    "@farmfe/plugin-sass"
   ],
 });

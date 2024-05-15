@@ -20,6 +20,7 @@ export default defineConfig({
     hmr: {
       path: "/__farm_hmr",
     },
+    // @ts-ignore
     middlewares: [(server) => {
       server.app().use(async (ctx, next) => {
         await next();
@@ -38,13 +39,17 @@ export default defineConfig({
           ctx.type = 'text/html'
           ctx.body = html;
         }
+
       })
     }]
   },
   plugins: [
     ['@farmfe/plugin-react', { runtime: 'automatic' }],
-    mdxPlugin(),
+    mdxPlugin({
+      providerImportSource: "@mdx-js/react"
+    }),
     virtualRoutes(),
-    farmJsPluginPostcss()
+    farmJsPluginPostcss(),
+    "@farmfe/plugin-sass"
   ],
 });

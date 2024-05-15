@@ -16,6 +16,7 @@
     "@farmfe/core": "1.1.2",
     "@farmfe/js-plugin-postcss": "^1.6.0",
     "@farmfe/plugin-react": "^1.0.1",
+    "@farmfe/plugin-sass": "^1.0.5",
     "@tailwindcss/typography": "^0.5.13",
     "@types/koa": "^2.15.0",
     "@types/node": "^20.11.28",
@@ -24,6 +25,10 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "react-refresh": "^0.14.0",
+    "remark-gfm": "^4.0.0",
+    "remark-mdx-frontmatter": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
     "tailwindcss": "^3.4.3",
     "tsx": "latest",
     "typescript": "^5.4.2"
@@ -33,10 +38,12 @@
     "@mdx-js/react": "^3.0.1",
     "@mdx-js/rollup": "^3.0.1",
     "cac": "^6.7.14",
+    "classnames": "^2.5.1",
     "globby": "^14.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "latest",
+    "remark-frontmatter": "^5.0.0",
     "vfile": "^6.0.1"
   }
 }
