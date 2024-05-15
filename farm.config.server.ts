@@ -1,6 +1,8 @@
 import { defineConfig } from '@farmfe/core';
 import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
+import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
+
 
 export default defineConfig({
   compilation: {
@@ -24,6 +26,7 @@ export default defineConfig({
       }
     ],
     mdxPlugin(),
-    virtualRoutes()
+    virtualRoutes(),
+    farmJsPluginPostcss()
   ],
 });

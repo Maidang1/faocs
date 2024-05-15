@@ -2,6 +2,7 @@ import { defineConfig } from '@farmfe/core';
 import path from 'path';
 import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
+import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
 
 
 // const cleanUrl = (url: string): string => url.replace(/#.*$/s, '').replace(/\?.*$/s, '')
@@ -43,6 +44,7 @@ export default defineConfig({
   plugins: [
     ['@farmfe/plugin-react', { runtime: 'automatic' }],
     mdxPlugin(),
-    virtualRoutes()
+    virtualRoutes(),
+    farmJsPluginPostcss()
   ],
 });

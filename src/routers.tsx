@@ -4,6 +4,8 @@ import { type RouteObject } from 'react-router-dom';
 import { routes as routes_virtual } from 'virtual-routes';
 import { Root } from "./app/root"
 import React from 'react'
+import './index.css';
+
 
 const routes = [
   ...routes_virtual

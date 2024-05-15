@@ -18,6 +18,10 @@ export const Root = (props: RootProps) => {
     previousPathRef.current = pathname
   })
 
-  return (<MDXProvider>{children}</MDXProvider>)
+  return (<MDXProvider>
+    <div className='mt-2 prose'>
+      {children}
+    </div>
+  </MDXProvider>)
 
 }
