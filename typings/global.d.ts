@@ -4,3 +4,4 @@ declare module "virtual-routes" {
 
 declare module "*.scss"
 declare module "*.svg"
+declare module "*.css"

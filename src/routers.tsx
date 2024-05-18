@@ -14,7 +14,6 @@ const routes = [
       path: route_virtual.path,
       lazy: async () => {
         const { frontmatter, ...route } = await route_virtual.lazy();
-        console.log("route", frontmatter)
         return {
           ...route,
           element: <Root frontmatter={frontmatter}><route.default /></Root >

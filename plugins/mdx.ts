@@ -48,8 +48,6 @@ export const mdxPlugin = (options: MdxPluginOption[number] = {}) => {
         const compiled = await processor.process(file);
         const code = String(compiled.value)
 
-        console.log("mdx code", code);
-
         return {
           content: code,
           sourceMap: compiled.map,

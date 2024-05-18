@@ -3,9 +3,8 @@ import path from 'path';
 import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
 import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
+import { readdir, readFile } from 'fs/promises';
 
-
-// const cleanUrl = (url: string): string => url.replace(/#.*$/s, '').replace(/\?.*$/s, '')
 export default defineConfig({
   compilation: {
     input: {
@@ -26,20 +25,28 @@ export default defineConfig({
         await next();
 
         if (ctx.path === '/' || ctx.status === 404) {
+          const distPath = path.join(process.cwd(), 'dist')
+          const files = await readdir(distPath)
+          const cssFile = files.filter(file => file.endsWith('css'))
+          const codes = await Promise.all(cssFile.map(async (file) => {
+            const css = await readFile(path.join(distPath, file), "utf-8")
+            return css
+          }))
+          const cssCode = codes.reduce((css, content) => css + content, "")
           const render = await import(path.join(process.cwd(), 'dist', 'index.js')).then(
             (m) => m.default
           );
+
           const renderedHtml = await render(ctx);
           const template = server.getCompiler().resource('index_client.html').toString();
           const html = template.replace(
             '<div>app-html-to-replace</div>',
             renderedHtml
-          );
+          ).replace("<!-- head -->", `<style>${cssCode}</style>`);
           ctx.status = 200;
           ctx.type = 'text/html'
           ctx.body = html;
         }
-
       })
     }]
   },
@@ -50,6 +57,6 @@ export default defineConfig({
     }),
     virtualRoutes(),
     farmJsPluginPostcss(),
-    "@farmfe/plugin-sass"
+    "@farmfe/plugin-sass",
   ],
 });
