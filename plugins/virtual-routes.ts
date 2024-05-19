@@ -1,8 +1,9 @@
 
-import { JsPlugin } from "@farmfe/core"
-import { extname, resolve } from "node:path"
+import { JsPlugin, normalizePath } from "@farmfe/core"
+import { extname, resolve, posix } from "node:path"
 import { globby } from "globby"
 import { buildServer } from "../cli/commands/dev"
+
 
 export function virtualRoutes(): JsPlugin {
   const virtualModuleId = 'virtual-routes'
@@ -47,13 +48,13 @@ export function virtualRoutes(): JsPlugin {
         resolvedPaths: [virtualModuleId],
       },
       executor: async (param) => {
-        const pagesPath = resolve(process.cwd(), 'site', 'pages');
+        const pagesPath = posix.normalize(resolve(process.cwd(), 'site', 'pages')).replace(/\\/g, '/')
         let code = `export const routes = [`
         for (const path of paths) {
           const type = extname(path).match(/(mdx|md)/) ? "mdx" : "jsx";
-          const replacer = glob.split('*')[0];
-          const filePath = path.replace(`${pagesPath}/`, '')
-          let pagePath = path.replace(replacer, '').replace(/\.(.*)/, '')
+          const replacer = pagesPath;
+          const filePath = normalizePath(path).replace(`${pagesPath}/`, '')
+          let pagePath = posix.normalize(path).replace(replacer, '').replace(/\.(.*)/, '')
           let lastUpdatedAt: number | undefined
 
           if (pagePath.endsWith('index')) {
@@ -77,8 +78,12 @@ export function virtualRoutes(): JsPlugin {
     buildStart: {
       async executor() {
         const pagesPath = resolve(process.cwd(), 'site', 'pages')
-        glob = `${pagesPath}/**/*.{md,mdx,ts,tsx,js,jsx}`;
-        paths = await globby(glob)
+        glob = `**/*.{md,mdx,ts,tsx,js,jsx}`;
+        paths = await globby(glob, {
+          cwd: pagesPath,
+          absolute: true,
+        })
+        console.log("paths", paths)
       }
     }
   }

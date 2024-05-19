@@ -1,4 +1,4 @@
-import { defineConfig } from '@farmfe/core';
+import { defineConfig, isWindows } from '@farmfe/core';
 import path from 'path';
 import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
@@ -33,7 +33,9 @@ export default defineConfig({
             return css
           }))
           const cssCode = codes.reduce((css, content) => css + content, "")
-          const render = await import(path.join(process.cwd(), 'dist', 'index.js')).then(
+          const pathResolve = path.join(process.cwd(), 'dist', 'index.js');
+
+          const render = await import(isWindows ? `file://${pathResolve}` : pathResolve).then(
             (m) => m.default
           );
 
