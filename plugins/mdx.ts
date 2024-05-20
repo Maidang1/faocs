@@ -8,6 +8,12 @@ import remarkParse from 'remark-parse'
 import remarkStringify from 'remark-stringify'
 import remarkGfm from "remark-gfm"
 import remarkMdxFrontmatter from "remark-mdx-frontmatter"
+import remarkToc from "remark-toc"
+import rehypeSlug from "rehype-slug"
+import { remarkCodeHike } from "@code-hike/mdx";
+import remarkDirective from "remark-directive";
+import remarkNoteBlock from "../lib/remark-note-block"
+
 
 
 type MdxPluginOption = Parameters<typeof createFormatAwareProcessors>
@@ -43,7 +49,7 @@ export const mdxPlugin = (options: MdxPluginOption[number] = {}) => {
         const file = new VFile({ path: param.resolvedPath, value: data })
         const processor = createFormatAwareProcessors({
           ...options,
-          remarkPlugins: [remarkParse, remarkStringify, remarkFrontmatter, remarkMdxFrontmatter, remarkGfm]
+          remarkPlugins: [remarkParse, remarkStringify, remarkFrontmatter, remarkMdxFrontmatter, remarkGfm, remarkToc, remarkDirective, remarkNoteBlock]
         });
         const compiled = await processor.process(file);
         const code = String(compiled.value)

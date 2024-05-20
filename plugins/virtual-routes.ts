@@ -3,6 +3,7 @@ import { JsPlugin, normalizePath } from "@farmfe/core"
 import { extname, resolve, posix } from "node:path"
 import { globby } from "globby"
 import { buildServer } from "../cli/commands/dev"
+import { routesPath } from "../global/routes"
 
 
 export function virtualRoutes(): JsPlugin {
@@ -61,8 +62,10 @@ export function virtualRoutes(): JsPlugin {
             pagePath = pagePath.replace('index', '').replace(/\/$/, '')
           }
           code += `  { lazy: () => import("${path}"), path: "/${pagePath}", type: "${type}", filePath: "${filePath}", lastUpdatedAt: ${lastUpdatedAt} },`
+          routesPath.routes.push(`${pagePath}`)
           if (pagePath) {
             code += `  { lazy: () => import("${path}"), path: "/${pagePath}.html", type: "${type}", filePath: "${filePath}", lastUpdatedAt: ${lastUpdatedAt} },`
+            routesPath.routes.push(`${pagePath}.html`)
           }
         }
         code += ']'
@@ -83,8 +86,9 @@ export function virtualRoutes(): JsPlugin {
           cwd: pagesPath,
           absolute: true,
         })
-        console.log("paths", paths)
+        routesPath.routes = []
       }
-    }
+    },
+
   }
 }

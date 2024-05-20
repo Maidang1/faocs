@@ -4,6 +4,7 @@ import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
 import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
 import { readdir, readFile } from 'fs/promises';
+import { routesPath } from './global/routes';
 
 export default defineConfig({
   compilation: {
@@ -23,8 +24,7 @@ export default defineConfig({
     middlewares: [(server) => {
       server.app().use(async (ctx, next) => {
         await next();
-
-        if (ctx.path === '/' || ctx.status === 404) {
+        if (ctx.path === '/' || routesPath.routes.includes(ctx.path)) {
           const distPath = path.join(process.cwd(), 'dist')
           const files = await readdir(distPath)
           const cssFile = files.filter(file => file.endsWith('css'))

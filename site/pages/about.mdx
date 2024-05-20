@@ -1,3 +1,177 @@
-# about
+---
+title: 使用 napi-rs 搭建开发环境
+author: Madinah
+description: napi-rs 提供了方便的命令来让我们基于 Rust 开发 node 的 addon，farm 也是基于 napi-rs 开发的。本小节记录了 napi-rs 的搭建过程，并添加了调试命令以增强调试体验。详细流程包括初始化项目、使用 pnpm + cargo 将原有项目改造成 monorepo 项目，添加相应的包，生成 binding 文件，以及添加调试功能。最终完成了环境搭建。
+tags:
+  - Napi-RS
+  - Rust
+createTime: 2023-04-20 16:49:00
+image: https://images.maidang.link/rijksmuseum_mignons_1660.jpg
+category: blog
+---
 
-about page
+### napi-rs
+
+https://napi.rs/docs/introduction/getting-started 提供了方便的命令来让我们基于 Rust 开发 node 的 addon，farm 也是基于 napi-rs 开发的，本小节记录 napi-rs 搭建过程，并且添加调试命令 增强调试体验。
+详细流程
+
+1. 初始化项目 https://napi.rs/docs/introduction/getting-started 根据官网步骤初始化项目目录
+2. 使用 pnpm + cargo 将原有项目改造成 monorepo 项目
+   a. 将原来的 yarn 文件删除 创建 pnpm-workspakce.yaml 然后执行 pnpm install
+   b. 将原来的 rust 项目也改造成 monorepo 的形式 具体配置文件如下
+
+```yaml
+# pnpm-workspace.yaml
+packages:
+  - packages/*
+  - examples/*
+  - crates/*
+```
+
+```toml
+<!-- Cargo.toml -->
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.dependencies]
+napi = {version = "2.15.0", default-features = false, features = [
+  "napi4",
+  "error_anyhow",
+  "serde-json",
+]}
+napi-derive = "2.15.0"
+```
+
+3. 添加相应的包
+
+```
+cli
+    ├── Cargo.toml
+    ├── build.rs
+    └── src
+        └── lib.rs
+```
+
+具体文件内容
+
+```toml
+# Cargo.toml
+[package]
+edition = "2021"
+name = "farm_cli"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = {workspace = true}
+napi-derive = {workspace = true}
+
+[build-dependencies]
+napi-build = "2.0.1"
+
+[profile.release]
+lto = true
+strip = "symbols"
+
+```
+
+build.rs
+
+```rust
+use napi_build::setup;
+
+fn main() {
+    setup()
+}
+#![deny(clippy::all)]
+
+#[macro_use]
+extern crate napi_derive;
+
+#[napi]
+pub fn sum(a: i32, b: i32) -> i32 {
+  a + b
+}
+```
+
+4. packages 文件目录
+
+```
+cli
+    ├── binding
+    │   ├── binding.cjs
+    │   ├── binding.d.ts
+    │   └── index.darwin-arm64.node
+    ├── package.json
+    └── src
+        └── index.js
+```
+
+如何生成 binding 文件
+
+> 添加如下的命令
+
+```bash
+"build:rs:debug": "napi build --platform --cargo-name farm_cli -p farm_cli --cargo-cwd ../../ binding --js binding.cjs --dts binding.d.ts"
+```
+
+index.cjs
+
+```javascript
+const { sum } = require('../binding/binding.cjs');
+const total = sum(1, 2);
+console.log(total);
+```
+
+测试执行 输出没有问题
+
+```bash
+3
+```
+
+添加调试
+.vscode 下面添加
+
+launch.json
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "sourceLanguages": ["rust"],
+      "name": "debug rust",
+      "program": "node",
+      "preLaunchTask": "npm: build:debug",
+      "args": ["--inspect", "${file}"]
+    }
+  ]
+}
+```
+
+tasks.json
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "build:dev",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build:debug"
+    }
+  ]
+}
+```
+
+到此环境搭建完毕
+代码地址 https://github.com/Maidang1/rust-learn-code/commit/51f5d71cdf9c6a3aa691057523e9145a9bde81af
