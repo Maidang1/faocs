@@ -6,7 +6,7 @@ import { type Context } from "koa"
 
 
 export default async function render(ctx: Context) {
-  const { query, dataRoutes } = createStaticHandler(routes, { basename: "/" })
+  const { query, dataRoutes } = createStaticHandler(routes, { basename: '/' })
   const fetchRequest = createFetchRequest(ctx)
   const context = await query(fetchRequest)
   const router = createStaticRouter(dataRoutes, context as StaticHandlerContext)
@@ -23,7 +23,7 @@ export default async function render(ctx: Context) {
 
 export function createFetchRequest(ctx: Context) {
   const origin = `http://${ctx.request.headers.host}`
-  const url = new URL(origin)
+  const url = new URL(ctx.request.originalUrl || ctx.request.url, origin)
   const controller = new AbortController()
   ctx.req.on('close', () => controller.abort())
 
