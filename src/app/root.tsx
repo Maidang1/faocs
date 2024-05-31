@@ -1,29 +1,27 @@
 import React, { useEffect, useRef } from 'react';
-import { MDXProvider } from "@mdx-js/react"
-import { ScrollRestoration, useLocation } from 'react-router-dom'
+import { MDXProvider } from '@mdx-js/react';
+import { ScrollRestoration, useLocation } from 'react-router-dom';
 import { components } from './components';
 import { Layout } from './layout';
-
+// @ts-ignore
+import { config } from 'virtual-config';
 
 interface RootProps {
-
   children: React.ReactChild;
-  frontmatter: Record<string, any>
+  frontmatter: Record<string, any>;
 }
 
 export const Root = (props: RootProps) => {
-
   const { children, frontmatter } = props;
   const { pathname } = useLocation();
-  const previousPathRef = useRef<string>()
+  const previousPathRef = useRef<string>();
   useEffect(() => {
-    previousPathRef.current = pathname
-  })
+    previousPathRef.current = pathname;
+  });
 
-  return (<MDXProvider components={components}>
-    <Layout frontmatter={frontmatter}>
-      {children}
-    </Layout>
-  </MDXProvider>)
-
-}
+  return (
+    <MDXProvider components={components}>
+      <Layout frontmatter={frontmatter}>{children}</Layout>
+    </MDXProvider>
+  );
+};

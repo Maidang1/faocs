@@ -4,6 +4,7 @@ import { extname, resolve, posix } from "node:path"
 import { globby } from "globby"
 import { buildServer } from "../cli/commands/dev"
 import { routesPath } from "../global/routes"
+import { getPagesDir } from "../src/utils/config"
 
 
 export function virtualRoutes(): JsPlugin {
@@ -15,7 +16,7 @@ export function virtualRoutes(): JsPlugin {
 
     configureDevServer(server) {
       const watcher = server.watcher.getInternalWatcher();
-      const pagesPath = resolve(process.cwd(), 'site', 'pages')
+      const pagesPath = getPagesDir()
       if (pagesPath) {
         watcher.add(pagesPath)
         watcher.on('add', async () => {
@@ -49,7 +50,7 @@ export function virtualRoutes(): JsPlugin {
         resolvedPaths: [virtualModuleId],
       },
       executor: async (param) => {
-        const pagesPath = posix.normalize(resolve(process.cwd(), 'site', 'pages')).replace(/\\/g, '/')
+        const pagesPath = posix.normalize(getPagesDir()).replace(/\\/g, '/')
         let code = `export const routes = [`
         for (const path of paths) {
           const type = extname(path).match(/(mdx|md)/) ? "mdx" : "jsx";
@@ -80,7 +81,7 @@ export function virtualRoutes(): JsPlugin {
 
     buildStart: {
       async executor() {
-        const pagesPath = resolve(process.cwd(), 'site', 'pages')
+        const pagesPath = getPagesDir()
         glob = `**/*.{md,mdx,ts,tsx,js,jsx}`;
         paths = await globby(glob, {
           cwd: pagesPath,

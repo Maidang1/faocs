@@ -82,6 +82,9 @@ devDependencies:
   hastscript:
     specifier: ^9.0.0
     version: 9.0.0
+  jiti:
+    specifier: ^1.21.0
+    version: 1.21.0
   postcss:
     specifier: ^8.4.38
     version: 8.4.38

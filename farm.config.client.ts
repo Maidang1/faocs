@@ -5,6 +5,9 @@ import { virtualRoutes } from './plugins/virtual-routes';
 import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
 import { readdir, readFile } from 'fs/promises';
 import { routesPath } from './global/routes';
+import { virtualConfig } from "./plugins/virtual-config"
+
+
 
 export default defineConfig({
   compilation: {
@@ -57,6 +60,7 @@ export default defineConfig({
     mdxPlugin({
       providerImportSource: "@mdx-js/react"
     }),
+    virtualConfig(),
     virtualRoutes(),
     farmJsPluginPostcss(),
     "@farmfe/plugin-sass",

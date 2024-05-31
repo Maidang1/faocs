@@ -2,6 +2,7 @@ import { defineConfig } from '@farmfe/core';
 import { mdxPlugin } from './plugins/mdx';
 import { virtualRoutes } from './plugins/virtual-routes';
 import farmJsPluginPostcss from "@farmfe/js-plugin-postcss"
+import { virtualConfig } from "./plugins/virtual-config"
 
 
 export default defineConfig({
@@ -28,6 +29,7 @@ export default defineConfig({
     mdxPlugin({
       providerImportSource: "@mdx-js/react"
     }),
+    virtualConfig(),
     virtualRoutes(),
     farmJsPluginPostcss(),
     "@farmfe/plugin-sass"
