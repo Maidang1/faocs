@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "packageManager": "pnpm@8.7.6",
+  "packageManager": "pnpm@9.1.4",
   "scripts": {
     "dev": "tsx cli/index.ts dev",
+    "server:watch": "farm watch --config farm.config.server.ts",
     "preview": "tsx cli/index.ts preview",
     "build": "tsx cli/index.ts build"
   },
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@code-hike/mdx": "^0.9.0",
     "@egoist/tailwindcss-icons": "^1.8.0",
+    "@farmfe/cli": "^1.0.2",
     "@farmfe/core": "1.1.2",
     "@farmfe/js-plugin-postcss": "^1.6.0",
     "@farmfe/plugin-react": "^1.0.1",

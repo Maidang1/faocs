@@ -2,7 +2,6 @@
 import { JsPlugin, normalizePath } from "@farmfe/core"
 import { extname, resolve, posix } from "node:path"
 import { globby } from "globby"
-import { buildServer } from "../cli/commands/dev"
 import { routesPath } from "../global/routes"
 import { getPagesDir } from "../src/utils/config"
 
@@ -20,11 +19,9 @@ export function virtualRoutes(): JsPlugin {
       if (pagesPath) {
         watcher.add(pagesPath)
         watcher.on('add', async () => {
-          await buildServer()
           server.restart(async () => { })
         })
         watcher.on('unlink', async () => {
-          await buildServer()
           server.restart(async () => { })
         })
       }

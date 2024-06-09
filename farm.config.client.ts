@@ -36,13 +36,14 @@ export default defineConfig({
             return css
           }))
           const cssCode = codes.reduce((css, content) => css + content, "")
-          const pathResolve = path.join(process.cwd(), 'dist', 'index.js');
+          const pathResolve = path.join(process.cwd(), 'dist', 'index.js') + '?ts=' + Date.now();
 
           const render = await import(isWindows ? `file://${pathResolve}` : pathResolve).then(
             (m) => m.default
           );
 
           const renderedHtml = await render(ctx);
+          console.log("renderedHtml", renderedHtml)
           const template = server.getCompiler().resource('index_client.html').toString();
           const html = template.replace(
             '<div>app-html-to-replace</div>',

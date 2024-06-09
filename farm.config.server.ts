@@ -12,7 +12,7 @@ export default defineConfig({
     },
     output: {
       path: './dist',
-      targetEnv: 'node'
+      targetEnv: 'node',
     },
     persistentCache: false,
     lazyCompilation: false
